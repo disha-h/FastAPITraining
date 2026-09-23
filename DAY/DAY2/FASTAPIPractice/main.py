@@ -1,4 +1,5 @@
 from fastapi import FastAPI
+from pydantic import BaseModel
 app = FastAPI()
 @app.get("/")
 def home():
@@ -22,3 +23,13 @@ def get_result(usn):
 @app.get("/candidate/{rollno}")
 def get_candidate(rollno:int):
     return {"result":"Distinction","rollno":rollno}
+#pydantic model
+from pydantic import BaseModel
+class Item(BaseModel):
+    name: str
+    description: str
+    price: float
+    in_stock:bool=True
+@app.post("/items")
+def create_item(item: Item):
+    return {"received": item,"total_price": item.price * 1.18} #adding tax
